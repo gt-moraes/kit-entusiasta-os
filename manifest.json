@@ -1,0 +1,22 @@
+{
+  "name": "kit-entusiasta-os",
+  "version": "0.1.0",
+  "status": "executable-prototype",
+  "managedPaths": [
+    "AGENTS.md",
+    "COMECE-AQUI.md",
+    "core/",
+    "templates/",
+    "checks/",
+    "instalar.py",
+    "tests/"
+  ],
+  "userOwnedPaths": [
+    "_contexto/",
+    "marca/",
+    "conteudo/",
+    "biblioteca/",
+    "projetos/"
+  ],
+  "externalActionsDefault": "blocked"
+}

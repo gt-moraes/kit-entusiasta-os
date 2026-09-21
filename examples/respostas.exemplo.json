@@ -1,0 +1,13 @@
+{
+  "name": "Marina",
+  "preferred_name": "Mari",
+  "building": "Uma operação enxuta de consultoria para pequenos negócios.",
+  "work_types": "Projetos de diagnóstico, propostas e materiais de entrega.",
+  "audience": "Donos de pequenos negócios que precisam organizar a operação.",
+  "tools": "Editor de texto, planilhas e um agente de IA no terminal.",
+  "autonomous_decisions": "Organizar rascunhos e sugerir estruturas reversíveis.",
+  "confirm_decisions": "Enviar mensagens, publicar, apagar arquivos e assumir compromissos.",
+  "quality": "A entrega é clara, verificável e pode ser usada sem explicação extra.",
+  "references_restrictions": "Linguagem simples, sem dados de clientes e sem promessas não confirmadas.",
+  "areas": ["projetos", "biblioteca"]
+}
