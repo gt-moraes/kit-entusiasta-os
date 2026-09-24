@@ -39,6 +39,63 @@ class InstallerTest(unittest.TestCase):
             check=False,
         )
 
+    def run_interactive(
+        self, destination: Path, typed: str
+    ) -> subprocess.CompletedProcess[str]:
+        """Roda o instalador sem --respostas, alimentando o stdin como uma pessoa faria."""
+        return subprocess.run(
+            [sys.executable, str(INSTALLER), "--destino", str(destination)],
+            cwd=ROOT,
+            input=typed,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+    def test_interactive_onboarding_records_every_answer(self) -> None:
+        typed = "\n".join(
+            [
+                "Marina",
+                "Mari",
+                "Uma consultoria enxuta",
+                "Diagnosticos e propostas",
+                "Donos de pequeno negocio",
+                "Planilhas e um agente de IA",
+                "Organizar rascunhos",
+                "Publicar e apagar arquivos",
+                "Entrega clara e verificavel",
+                "Linguagem simples",
+                "projetos",
+            ]
+        ) + "\n"
+        with tempfile.TemporaryDirectory() as temp:
+            destination = Path(temp) / "workspace"
+            result = self.run_interactive(destination, typed)
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            pessoa = (destination / "_contexto/pessoa.md").read_text(encoding="utf-8")
+            self.assertIn("Marina", pessoa)
+            self.assertIn("Mari", pessoa)
+            principios = (destination / "_contexto/principios.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("Publicar e apagar arquivos", principios)
+            abertas = (destination / "_contexto/perguntas-em-aberto.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("Nenhuma", abertas)
+
+    def test_interrupted_input_explains_instead_of_crashing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            destination = Path(temp) / "workspace"
+            result = self.run_interactive(destination, "Marina\n")
+
+            self.assertEqual(result.returncode, 2)
+            self.assertNotIn("Traceback", result.stderr)
+            self.assertNotIn("EOFError", result.stderr)
+            self.assertIn("--respostas", result.stderr)
+            self.assertFalse(destination.exists())
+
     def test_creates_private_minimal_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             destination = Path(temp) / "workspace"

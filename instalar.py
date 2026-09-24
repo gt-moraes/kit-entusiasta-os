@@ -392,6 +392,25 @@ def main() -> int:
     except ValueError as exc:
         print(f"Erro: {exc}", file=sys.stderr)
         return 2
+    except KeyboardInterrupt:
+        print("\n\nOnboarding interrompido. Nada foi criado.", file=sys.stderr)
+        print("Para retomar, rode o mesmo comando de novo.", file=sys.stderr)
+        return 130
+    except EOFError:
+        print("\n\nOnboarding interrompido: a entrada terminou antes das respostas.", file=sys.stderr)
+        print(
+            "Isso acontece quando o comando roda sem um terminal interativo.",
+            file=sys.stderr,
+        )
+        print(
+            "Use --respostas com um arquivo JSON para instalar sem interacao:",
+            file=sys.stderr,
+        )
+        print(
+            "  python3 instalar.py --destino <pasta> --respostas examples/respostas.exemplo.json",
+            file=sys.stderr,
+        )
+        return 2
 
     mode = "Simulação concluída" if args.dry_run else "Instalação concluída"
     print(f"\n{mode}: {args.destino.expanduser().resolve()}")
